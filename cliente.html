@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Presença</title>
+</head>
+<body>
+    <h2>Gerador de Lista de Presença</h2>
+    <input type="file" id="arquivo" />
+    <button onclick="enviar()">Analisar</button>
+    <ul id="resultado"></ul>
+
+    <script>
+        async function enviar() {
+            const input = document.getElementById('arquivo');
+            const formData = new FormData();
+            formData.append('arquivo', input.files[0]);
+
+            const res = await fetch('http://localhost:3000/api/frequencia', {
+                method: 'POST',
+                body: formData
+            });
+            const dados = await res.json();
+
+            const ul = document.getElementById('resultado');
+            ul.innerHTML = '';
+            dados.presentes.forEach(nome => {
+                const li = document.createElement('li');
+                li.textContent = nome;
+                ul.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>

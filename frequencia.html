@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lista de Presença</title>
+</head>
+<body>
+  <h2>Seja bem-vindo ao gerador de lista de presença de reunião.</h2>
+
+  <label for="nome">Nome:</label>
+  <input type="text" id="nome" placeholder="Digite seu nome">
+  <button onclick="enviarPresenca()">Analisar</button>
+
+  <h3>Lista de presentes:</h3>
+  <ul id="lista-presenca"></ul>
+
+  <script>
+    async function enviarPresenca() {
+      const nome = document.getElementById("nome").value;
+
+      const resposta = await fetch("/api/frequencia", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ nome })
+      });
+
+      if (resposta.ok) {
+        const lista = document.getElementById("lista-presenca");
+        const item = document.createElement("li");
+        item.textContent = nome;
+        lista.appendChild(item);
+      } else {
+        alert("Erro ao enviar presença.");
+      }
+    }
+  </script>
+</body>
+</html>
